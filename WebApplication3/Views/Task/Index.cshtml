@@ -11,6 +11,7 @@
     @using (Html.BeginForm("Index", "Task", FormMethod.Get))
     {
         <p>
+            Search: @Html.TextBox("searchString")
             Category: @Html.DropDownList("category", "All")
             <input type="submit" value="Filter" />
         </p>

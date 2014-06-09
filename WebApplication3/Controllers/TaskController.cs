@@ -17,6 +17,7 @@ namespace WebApplication3.Controllers
     public class TaskController : Controller
     {
         private TaskDbContext db = new TaskDbContext();
+        private TaskDao dao = new TaskDao();
 
         public TaskController()
             : this(new UserManager<ApplicationUser>(new UserStore<ApplicationUser>(new ApplicationDbContext())))
@@ -33,33 +34,26 @@ namespace WebApplication3.Controllers
 
         // GET: /Task/
         [Authorize]
-        public ActionResult Index(string category)
+        public ActionResult Index(string category, string searchString)
         {
-            var folders = Directory.GetDirectories(@"C:\").Where(d => d.Length > 10).OrderBy(d => d.Length);
+            // List all distinct categories
+            ViewBag.category = new SelectList(dao.ListCategories());
 
-            foreach (string folder in folders)
-            {
-               Debug.Write(folder);
-            }
-
-            var CatLst = new List<string>();
-
-            var CatQry = from d in db.Tasks
-                           orderby d.Category
-                           select d.Category;
-
-            CatLst.AddRange(CatQry.Distinct());
-            ViewBag.category = new SelectList(CatLst);
-
-            var tasks = from m in db.Tasks
-                         select m;
-
+            // List all tasks not filtered
+            var tasks = new List<Task>();
+            tasks = dao.List(User.Identity.GetUserId());
+            
+            // If a category is selected, filter by this category
             if (!string.IsNullOrEmpty(category))
             {
-                tasks = tasks.Where(x => x.Category == category && x.UserId == User.Identity.GetUserId());
+                tasks = dao.List(User.Identity.GetUserId(), category);
             }
 
-            //tasks = db.Tasks.ToList().Where(item => item.UserId == User.Identity.GetUserId()).ToList();
+            // Search bar
+            if (!string.IsNullOrEmpty(searchString))
+            {
+                tasks = dao.Search(User.Identity.GetUserId(), searchString);
+            }
             return View(tasks);
         }
 
