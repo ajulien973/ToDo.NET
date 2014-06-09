@@ -64,7 +64,7 @@ namespace WebApplication3.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Task task = db.Tasks.Find(id);
+            Task task = dao.Get(id);
             if (task == null)
             {
                 return HttpNotFound();
@@ -87,10 +87,8 @@ namespace WebApplication3.Controllers
         {
             if (ModelState.IsValid)
             {
-                var currentUser = UserManager.FindById(User.Identity.GetUserId());
-                task.UserId = currentUser.Id;
-                db.Tasks.Add(task);
-                db.SaveChanges();
+                task.UserId = User.Identity.GetUserId();
+                dao.Create(task);
                 return RedirectToAction("Index");
             }
 
@@ -104,7 +102,7 @@ namespace WebApplication3.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Task task = db.Tasks.Find(id);
+            Task task = dao.Get(id);
             if (task == null)
             {
                 return HttpNotFound();
@@ -121,8 +119,7 @@ namespace WebApplication3.Controllers
         {
             if (ModelState.IsValid)
             {
-                db.Entry(task).State = EntityState.Modified;
-                db.SaveChanges();
+                dao.Update(task);
                 return RedirectToAction("Index");
             }
             return View(task);
@@ -135,7 +132,7 @@ namespace WebApplication3.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Task task = db.Tasks.Find(id);
+            Task task = dao.Get(id);
             if (task == null)
             {
                 return HttpNotFound();
@@ -148,9 +145,7 @@ namespace WebApplication3.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int id)
         {
-            Task task = db.Tasks.Find(id);
-            db.Tasks.Remove(task);
-            db.SaveChanges();
+            dao.Delete(dao.Get(id));
             return RedirectToAction("Index");
         }
 
