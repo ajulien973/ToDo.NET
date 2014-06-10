@@ -24,7 +24,6 @@ namespace WebApplication3.Models
 
         private TaskDbContext db = new TaskDbContext();
 
-
         public void Create(Task task)
         {
             db.Tasks.Add(task);
@@ -67,14 +66,14 @@ namespace WebApplication3.Models
             //tasks = db.Tasks.ToList().Where(item => item.UserId == User.Identity.GetUserId()).ToList();
         }
 
-        public List<Task> List(string userId, string category)
+        public List<Task> List(string userId, List<string> category)
         {
             //var tasks = from m in db.Tasks
              //           where m.Category == category
                //         select m;
             var tasks =
                 db.Tasks.ToList()
-                    .Where(item => item.Category == category && item.UserId == userId);
+                    .Where(item => category.Contains(item.Category) && item.UserId == userId);
 
             return tasks.ToList();
         }

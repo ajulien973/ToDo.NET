@@ -8,15 +8,19 @@
 
 <p>
     @Html.ActionLink("Create New", "Create")
-    @using (Html.BeginForm("Index", "Task", FormMethod.Get))
+    @using (Html.BeginForm("Index", "Task", FormMethod.Post))
     {
         <p>
             Search: @Html.TextBox("searchString")
-            Category: @Html.DropDownList("category", "All")
+            Category: @Html.DropDownList("category", (SelectList) ViewBag.categories, "All", new{
+                          style = "width: 20%",  
+                          multiple = true
+                      })
             <input type="submit" value="Filter" />
         </p>
     }
 </p>
+
 
 
 <table class="table">
@@ -77,3 +81,5 @@
 }
 
 </table>
+
+

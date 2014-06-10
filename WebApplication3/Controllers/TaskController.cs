@@ -33,21 +33,38 @@ namespace WebApplication3.Controllers
 
 
         // GET: /Task/
+        [HttpGet]
         [Authorize]
-        public ActionResult Index(string category, string searchString)
+        public ActionResult Index()
         {
             // List all distinct categories
-            ViewBag.category = new SelectList(dao.ListCategories());
+            ViewBag.categories = new SelectList(dao.ListCategories());
 
             // List all tasks not filtered
             var tasks = new List<Task>();
             tasks = dao.List(User.Identity.GetUserId());
-            
+
+            return View(tasks);
+        }
+
+        [HttpPost]
+        [Authorize]
+        public ActionResult Index(List<string> category, string searchString)
+        {
+            // List all distinct categories
+            ViewBag.categories = new SelectList(dao.ListCategories());
+
+            var tasks = new List<Task>();
+
+            // List all tasks not filtered
+            tasks = dao.List(User.Identity.GetUserId());
+
             // If a category is selected, filter by this category
-            if (!string.IsNullOrEmpty(category))
+            if (category != null)
             {
                 tasks = dao.List(User.Identity.GetUserId(), category);
             }
+
 
             // Search bar
             if (!string.IsNullOrEmpty(searchString))
@@ -55,6 +72,7 @@ namespace WebApplication3.Controllers
                 tasks = dao.Search(User.Identity.GetUserId(), searchString);
             }
             return View(tasks);
+            
         }
 
         // GET: /Task/Details/5
