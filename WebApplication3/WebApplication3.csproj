@@ -164,15 +164,6 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\201406051443231_InitialCreate.cs" />
-    <Compile Include="Migrations\201406051443231_InitialCreate.Designer.cs">
-      <DependentUpon>201406051443231_InitialCreate.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201406051518006_Initial.cs" />
-    <Compile Include="Migrations\201406051518006_Initial.Designer.cs">
-      <DependentUpon>201406051518006_Initial.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\Dao.cs" />
     <Compile Include="Models\IdentityModels.cs" />
@@ -252,7 +243,9 @@
     <Content Include="Scripts\select2\select2_locale_zh-CN.js" />
     <Content Include="Scripts\select2\select2_locale_zh-TW.js" />
     <Content Include="Scripts\_references.js" />
-    <Content Include="Web.config" />
+    <Content Include="Web.config">
+      <SubType>Designer</SubType>
+    </Content>
     <Content Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </Content>
@@ -301,14 +294,6 @@
     <Content Include="fonts\glyphicons-halflings-regular.eot" />
     <Content Include="packages.config" />
     <None Include="Project_Readme.html" />
-  </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="Migrations\201406051443231_InitialCreate.resx">
-      <DependentUpon>201406051443231_InitialCreate.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201406051518006_Initial.resx">
-      <DependentUpon>201406051518006_Initial.cs</DependentUpon>
-    </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
